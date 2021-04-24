@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class TransportUnit extends Entity {
+  public static final int CONTAINED_ENTITY_DAMAGE_REDUCTION = 2;
   private Set<Entity> entitiesContained;
 
   public TransportUnit(String name, int lifePoints) {
@@ -20,26 +20,25 @@ public class TransportUnit extends Entity {
 
   @Override
   protected int propagateDamage(int damageAmount) {
-    int sumOfDamage = 0;
-    int damageInflicted = Math.min(lifePoints, damageAmount);
-    lifePoints -= damageInflicted;
-    sumOfDamage += damageInflicted;
+    int damageSum = 0;
+    damageSum += calculateDamageAndApply(damageAmount);
     for (Entity entity : entitiesContained) {
-      sumOfDamage += entity.propagateDamage(damageAmount / 2);
+      damageSum += entity
+              .propagateDamage(damageAmount / CONTAINED_ENTITY_DAMAGE_REDUCTION);
     }
-    return sumOfDamage;
+    return damageSum;
   }
 
   @Override
   public int minimumStrikeToDestroy() {
     return Math.max(lifePoints,
-     entitiesContained.stream().mapToInt(Entity::minimumStrikeToDestroy).max().getAsInt());
+            entitiesContained.stream().mapToInt(Entity::minimumStrikeToDestroy).max().getAsInt());
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append(name).append(String.format("(%d)", lifePoints)).append(" transporting: ");
+    sb.append(super.toString()).append(" transporting: ");
     sb.append("[");
     List<Entity> entityList = new ArrayList<>(entitiesContained);
     for (int i = 0; i < entitiesContained.size(); i++) {

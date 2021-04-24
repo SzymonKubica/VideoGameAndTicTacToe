@@ -1,15 +1,14 @@
 package videogame;
 
 public class Magician extends Entity implements SpellCaster {
+  public static final int MAGICIAN_DAMAGE_FACTOR = 2;
   public Magician(String name, int lifePoints) {
     super(name, lifePoints);
   }
 
   @Override
   protected int propagateDamage(int damageAmount) {
-    int damageInflicted = Math.min(lifePoints, damageAmount);
-    lifePoints -= damageInflicted;
-    return damageInflicted;
+    return calculateDamageAndApply(damageAmount);
   }
 
   @Override
@@ -19,12 +18,8 @@ public class Magician extends Entity implements SpellCaster {
 
   @Override
   public int getStrength() {
-    return 2 * lifePoints;
+    return MAGICIAN_DAMAGE_FACTOR * lifePoints;
   }
 
-  @Override
-  public String toString() {
-    return String.format("%s(%d)", name, lifePoints);
-  }
 }
 

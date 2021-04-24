@@ -21,6 +21,17 @@ public abstract class Entity {
 	
 	protected abstract int propagateDamage(int damageAmount);
 
+	protected int calculateDamageAndApply(int damageAmount) {
+	  int damageInflicted = Math.min(lifePoints, damageAmount);
+	  lifePoints -= damageInflicted;
+	  return damageInflicted;
+	}
+
 	public abstract int minimumStrikeToDestroy();
+
+	@Override
+	public String toString() {
+	  return String.format("%s(%d)", name, lifePoints);
+	}
 	
 }
