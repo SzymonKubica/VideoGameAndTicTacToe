@@ -3,7 +3,7 @@ package videogame;
 public abstract class Entity {
 	
 	protected String name;
-	protected int lifePoints = 0;
+	protected int lifePoints;
 
 	public Entity(String name, int lifePoints) {
 		assert(lifePoints >= 0);
@@ -12,13 +12,11 @@ public abstract class Entity {
 	}
 
 	public final boolean isAlive() {
-		/* TODO: Implement as part of Section A Question 2 */
-		return false;
+	  return lifePoints != 0;
 	}
 	
 	public final int applySpell(SpellCaster spellCaster) {
-		/* TODO: Implement as part of Section A Question 2 */
-		return -1;
+	  return propagateDamage(spellCaster.getStrength());
 	}
 	
 	protected abstract int propagateDamage(int damageAmount);
