@@ -83,7 +83,7 @@ public class Board {
 
 		if (mark != NOUGHT && mark != CROSS) {
 			throw new GameException("attempted to set an invalid mark: "
-					+ String.valueOf(mark));
+					+ mark);
 		}
 
 		// perform board update
@@ -96,6 +96,7 @@ public class Board {
 							+ pos);
 		} else {
 			grid[row][col] = mark;
+			setLastMarkPosition(pos);
 			numOfMarks++;
 		}
 	}
@@ -125,9 +126,7 @@ public class Board {
 	public Board makeCopy() {
 		Board copy = new Board();
 		for (int row = 0; row < 3; row++) {
-			for (int col = 0; col < 3; col++) {
-				copy.grid[row][col] = this.grid[row][col];
-			}
+          System.arraycopy(this.grid[row], 0, copy.grid[row], 0, 3);
 		}
 		copy.numOfMarks = this.numOfMarks;
 		
